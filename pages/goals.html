@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111B4D">
+<title>เป้าหมายการออม — Dashboard Personal Planning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/theme.css">
+<link rel="stylesheet" href="../css/goals.css">
+</head>
+<body data-page="goals">
+<div id="app-header"></div>
+<main id="main">
+<!-- PAGE:START -->
+<section class="page" id="page-goals">
+  <div class="page-head">
+    <div><h1 class="page-title">เป้าหมายการออม</h1><p class="page-sub">ตั้งเป้าหมายแล้วออมทีละก้าว</p></div>
+    <div class="page-tools"><button type="button" class="btn btn-primary" onclick="Pages.goals.openForm()"><span data-icon="plus"></span>ตั้งเป้าหมายใหม่</button></div>
+  </div>
+  <div class="sum-strip" data-sum></div>
+  <div class="goal-grid" data-grid></div>
+
+  <div class="modal-overlay" id="goal-modal" role="dialog" aria-modal="true" aria-labelledby="goal-title"><div class="modal">
+    <div class="modal-head"><h2 id="goal-title">ตั้งเป้าหมายใหม่</h2><button type="button" class="icon-btn" data-close aria-label="ปิด"><span data-icon="close"></span></button></div>
+    <div class="field"><label for="goal-name">ชื่อเป้าหมาย</label><input id="goal-name" type="text" maxlength="50" placeholder="เช่น โน้ตบุ๊กเครื่องใหม่"></div>
+    <div class="field"><label id="goal-emoji-l">ไอคอน</label><div class="emoji-pick" id="goal-emoji" role="group" aria-labelledby="goal-emoji-l"></div></div>
+    <div class="field-row">
+      <div class="field"><label for="goal-target">เป้าหมาย (บาท)</label><input id="goal-target" type="number" inputmode="decimal" min="0" placeholder="0"></div>
+      <div class="field"><label for="goal-current">ออมไว้แล้ว (บาท)</label><input id="goal-current" type="number" inputmode="decimal" min="0" placeholder="0"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label for="goal-deadline">กำหนดเสร็จ (ไม่บังคับ)</label><input id="goal-deadline" type="date"></div>
+      <div class="field"><label for="goal-kind">ประเภท</label><select id="goal-kind"></select></div>
+    </div>
+    <div class="form-error" id="goal-error" role="alert" hidden></div>
+    <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>ยกเลิก</button><button type="button" class="btn btn-primary" id="goal-save">บันทึก</button></div>
+  </div></div>
+
+  <div class="modal-overlay" id="dep-modal" role="dialog" aria-modal="true" aria-labelledby="dep-title"><div class="modal">
+    <div class="modal-head"><h2 id="dep-title">ฝากออม</h2><button type="button" class="icon-btn" data-close aria-label="ปิด"><span data-icon="close"></span></button></div>
+    <p class="modal-note" id="dep-note"></p>
+    <div class="field"><label for="dep-amount">จำนวนที่ออมเพิ่ม (บาท)</label><input id="dep-amount" type="number" inputmode="decimal" min="0" placeholder="0"></div>
+    <div class="form-error" id="dep-error" role="alert" hidden></div>
+    <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>ยกเลิก</button><button type="button" class="btn btn-primary" id="dep-save">ยืนยัน</button></div>
+  </div></div>
+</section>
+<!-- PAGE:END -->
+</main>
+<div id="modal-root"></div>
+<script src="../js/api.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/goals.js"></script>
+</body>
+</html>

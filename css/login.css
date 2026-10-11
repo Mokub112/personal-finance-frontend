@@ -1,0 +1,69 @@
+/* login.css · หน้าเข้าสู่ระบบ / สมัคร / ลืมรหัสผ่าน */
+.login-shell { padding-top: env(safe-area-inset-top, 0px); min-height: 100vh; display: grid; grid-template-columns: 1.05fr 1fr; background: var(--indigo-950); }
+
+.login-brand {
+  position: relative; overflow: hidden; color: #fff;
+  padding: 48px 56px; display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
+  background:
+    radial-gradient(90% 70% at 100% 0%, rgba(71,180,255,.34), transparent 60%),
+    radial-gradient(80% 60% at 0% 100%, rgba(42,63,181,.65), transparent 65%),
+    linear-gradient(160deg, var(--indigo-800), var(--indigo-950));
+}
+.login-brand::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 45%, transparent);
+          mask-image: linear-gradient(180deg, transparent, #000 45%, transparent);
+}
+.login-brand > * { position: relative; z-index: 1; }
+.login-copy h1 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 600; line-height: 1.25; letter-spacing: -.5px; margin-bottom: 14px; }
+.login-copy p { color: rgba(255,255,255,.72); font-size: 15.5px; max-width: 420px; }
+.login-feats { list-style: none; display: grid; gap: 16px; }
+.login-feats li { display: flex; gap: 14px; align-items: flex-start; }
+.login-feats .fi {
+  width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0; display: grid; place-items: center;
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.16); color: var(--sky-300);
+}
+.login-feats b { display: block; font-weight: 500; font-size: 14.5px; }
+.login-feats span { font-size: 13.5px; color: rgba(255,255,255,.62); }
+
+.login-panel { background: var(--surface); display: flex; align-items: center; justify-content: center; padding: 32px 24px; }
+.login-card { width: 100%; max-width: 410px; }
+.login-card h2 { font-size: 26px; font-weight: 600; color: var(--indigo-900); letter-spacing: -.3px; }
+.login-card .lead { color: var(--ink-mute); margin: 4px 0 24px; font-size: 14.5px; }
+
+.pw { position: relative; }
+.pw input { padding-right: 46px; }
+.pw .toggle {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border: 0; background: none; color: var(--ink-mute); border-radius: 8px; display: grid; place-items: center;
+}
+.pw .toggle:hover { color: var(--indigo-700); background: var(--indigo-50); }
+.row-between { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 2px 0 18px; font-size: 14px; }
+.check { display: flex; align-items: center; gap: 8px; color: var(--ink-soft); cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--indigo-700); }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--sky-600); font-weight: 500; font-size: inherit; }
+.linkbtn:hover { text-decoration: underline; }
+.switch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--ink-mute); }
+.back { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; }
+
+.strength { height: 4px; border-radius: 4px; background: var(--indigo-100); margin-top: 8px; overflow: hidden; }
+.strength i { display: block; height: 100%; width: 0; transition: width .25s, background .25s; }
+.strength-label { font-size: 12.5px; color: var(--ink-mute); margin-top: 4px; min-height: 18px; }
+
+.demo-box {
+  margin-top: 22px; padding: 14px 16px; border-radius: 12px; font-size: 13.5px; color: var(--ink-soft);
+  background: var(--sky-100); border: 1px solid #BFE1FB; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+.demo-box code { background: #fff; padding: 1px 6px; border-radius: 5px; font-size: 13px; }
+
+@media (max-width: 860px) {
+  .login-shell { grid-template-columns: 1fr; }
+  .login-brand { padding: 24px 22px 28px; gap: 18px; }
+  .login-feats { display: none; }
+  .login-copy h1 { font-size: 24px; margin-bottom: 8px; }
+  .login-copy p { font-size: 14px; }
+  .login-panel { align-items: flex-start; padding: 24px 18px 40px; }
+  .login-card h2 { font-size: 22px; }
+}

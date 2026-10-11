@@ -1,0 +1,18 @@
+/* profile.css · หน้าบัญชีส่วนตัว */
+.profile-grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; align-items: start; }
+.profile-side { display: flex; flex-direction: column; gap: 20px; }
+.id-card {
+  text-align: center; padding: 32px 22px; color: #fff; border: 0;
+  background: radial-gradient(120% 100% at 100% 0%, rgba(71,180,255,.3), transparent 60%), linear-gradient(160deg, var(--indigo-800), var(--indigo-950));
+}
+.avatar-lg {
+  width: 88px; height: 88px; margin: 0 auto 14px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 36px; font-weight: 600;
+  background: linear-gradient(145deg, var(--sky-400), var(--sky-600)); border: 3px solid rgba(255,255,255,.26);
+}
+.id-card h2 { font-size: 20px; font-weight: 600; word-break: break-word; }
+.id-card p { color: rgba(255,255,255,.72); font-size: 14px; word-break: break-all; }
+.id-card .pill-light { margin-top: 14px; }
+.profile-main { display: flex; flex-direction: column; gap: 20px; }
+.act-row { display: flex; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 860px) { .profile-grid { grid-template-columns: 1fr; } }

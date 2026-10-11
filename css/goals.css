@@ -1,0 +1,26 @@
+/* goals.css · หน้าเป้าหมายการออม */
+.goal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.goal { display: flex; flex-direction: column; gap: 14px; }
+.goal-head { display: flex; gap: 12px; align-items: flex-start; }
+.goal-head .ico { width: 46px; height: 46px; font-size: 22px; }
+.goal-title { flex: 1; min-width: 0; }
+.goal-title h3 { font-size: 16px; font-weight: 600; color: var(--indigo-900); line-height: 1.35; word-break: break-word; }
+.goal-title p { font-size: 13px; color: var(--ink-mute); }
+.goal-acts { display: flex; gap: 6px; }
+.goal-money { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.goal-money b { font-size: 27px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.4px; }
+.goal-money span { color: var(--ink-mute); font-size: 14px; }
+.goal-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 13.5px; color: var(--ink-soft); }
+.goal-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 14px; border-top: 1px solid var(--border); }
+.goal-date small { display: block; font-size: 12.5px; color: var(--ink-mute); }
+.goal-date b { font-weight: 500; font-size: 14px; }
+.goal.done .bar > i { --bar-c: var(--positive); }
+
+.emoji-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.emoji-pick button {
+  width: 42px; height: 42px; border-radius: 10px; font-size: 20px;
+  border: 2px solid transparent; background: var(--indigo-50);
+}
+.emoji-pick button.on { border-color: var(--sky-500); background: var(--sky-100); }
+
+@media (max-width: 760px) { .goal-grid { grid-template-columns: 1fr; } }

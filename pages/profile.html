@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111B4D">
+<title>บัญชีส่วนตัว — Dashboard Personal Planning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/theme.css">
+<link rel="stylesheet" href="../css/profile.css">
+</head>
+<body data-page="profile">
+<div id="app-header"></div>
+<main id="main">
+<!-- PAGE:START -->
+<section class="page" id="page-profile">
+  <div class="page-head"><div><h1 class="page-title">บัญชีส่วนตัว</h1><p class="page-sub">จัดการข้อมูลและความปลอดภัยของบัญชี</p></div></div>
+  <div class="profile-grid">
+    <div class="profile-side">
+      <article class="card id-card"><div class="avatar-lg" data-avatar>?</div><h2 data-name></h2><p data-email></p><span class="pill-light" data-role></span></article>
+    </div>
+    <div class="profile-main">
+      <article class="card">
+        <div class="card-head"><h2>ข้อมูลส่วนตัว</h2></div>
+        <div class="field-row"><div class="field"><label for="pf-first">ชื่อ</label><input id="pf-first" type="text" autocomplete="given-name"></div><div class="field"><label for="pf-last">นามสกุล</label><input id="pf-last" type="text" autocomplete="family-name"></div></div>
+        <div class="field"><label for="pf-email">อีเมล</label><input id="pf-email" type="email" autocomplete="email"></div>
+        <div class="field"><label for="pf-role">ประเภทบัญชี</label><select id="pf-role"></select></div>
+        <div class="form-error" id="pf-err" role="alert" hidden></div><div class="form-ok" id="pf-msg" role="status" hidden></div>
+        <button type="button" class="btn btn-primary" id="pf-save">บันทึกข้อมูล</button>
+      </article>
+      <article class="card">
+        <div class="card-head"><h2>ความปลอดภัยและการใช้งาน</h2></div>
+        <div class="act-row"><button type="button" class="btn btn-ghost" onclick="Pages.profile.openPassword()">เปลี่ยนรหัสผ่าน</button><button type="button" class="btn btn-danger" data-logout>ออกจากระบบ</button></div>
+      </article>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="cp-modal" role="dialog" aria-modal="true" aria-labelledby="cp-title"><div class="modal">
+    <div class="modal-head"><h2 id="cp-title">เปลี่ยนรหัสผ่าน</h2><button type="button" class="icon-btn" data-close aria-label="ปิด"><span data-icon="close"></span></button></div>
+    <div class="field"><label for="cp-current">รหัสผ่านปัจจุบัน</label><input id="cp-current" type="password" autocomplete="current-password"></div>
+    <div class="field"><label for="cp-new">รหัสผ่านใหม่ (อย่างน้อย 8 ตัวอักษร)</label><input id="cp-new" type="password" autocomplete="new-password"></div>
+    <div class="field"><label for="cp-confirm">ยืนยันรหัสผ่านใหม่</label><input id="cp-confirm" type="password" autocomplete="new-password"></div>
+    <div class="form-error" id="cp-error" role="alert" hidden></div>
+    <div class="modal-foot"><button type="button" class="btn btn-ghost" data-close>ยกเลิก</button><button type="button" class="btn btn-primary" id="cp-save">บันทึก</button></div>
+  </div></div>
+</section>
+<!-- PAGE:END -->
+</main>
+<div id="modal-root"></div>
+<script src="../js/app.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/profile.js"></script>
+</body>
+</html>

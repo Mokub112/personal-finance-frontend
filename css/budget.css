@@ -1,0 +1,28 @@
+/* budget.css · หน้าวางแผนงบประมาณ */
+.budget-sum-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.budget-sum-row span { font-size: 13px; color: var(--ink-mute); }
+.budget-sum-row b { display: block; font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.3px; }
+.budget-sum .bar { height: 10px; margin-top: 16px; }
+.budget-sum .hint { font-size: 13px; color: var(--ink-mute); margin-top: 8px; }
+
+.budget-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.budget-grid > .empty { grid-column: 1 / -1; background: #fff; border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); padding: 44px 16px; }
+.bcard { display: flex; flex-direction: column; gap: 14px; }
+.bcard-head { display: flex; gap: 12px; align-items: center; }
+.bcard-name { font-weight: 600; line-height: 1.3; }
+.bcard-limit { font-size: 13px; color: var(--ink-mute); }
+.bcard-pct { margin-left: auto; font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bcard-row { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; color: var(--ink-soft); flex-wrap: wrap; }
+.bcard-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--border); }
+.bcard-acts { display: flex; gap: 6px; align-items: center; }
+.bcard.warn .bar > i { --bar-c: #D9A21B; }
+.bcard.over .bar > i { --bar-c: var(--negative); }
+.bcard.over .bcard-pct { color: var(--negative); }
+
+@media (max-width: 980px) { .budget-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) {
+  .budget-grid { grid-template-columns: 1fr; }
+  .budget-sum-row { gap: 8px; }
+  .budget-sum-row b { font-size: 17px; }
+  .budget-sum-row span { font-size: 12px; }
+}
