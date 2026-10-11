@@ -181,5 +181,33 @@ const API = {
     return this.request(`/budgets/${encodeURIComponent(id)}`, {
       method: 'DELETE'
     });
+  },
+
+  // Profile
+  getProfile() {
+    return this.request('/auth/me');
+  },
+
+  updateProfile(profile) {
+    return this.request('/auth/profile', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        email: profile.email,
+        role: profile.role
+      })
+    });
+  },
+
+  changePassword(currentPassword, newPassword) {
+    return this.request('/auth/password', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        currentPassword,
+        newPassword
+      })
+    });
   }
 };
+
