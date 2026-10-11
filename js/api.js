@@ -148,5 +148,38 @@ const API = {
       `/goals/${encodeURIComponent(id)}`,
       { method: 'DELETE' }
     );
+  },
+
+  // เพิ่มโค้ด Budget API ตรงนี้
+  async getBudgets(month, year) {
+    const data = await this.request(
+      `/budgets?month=${month}&year=${year}`
+    );
+    return data.budgets;
+  },
+
+  createBudget(budget) {
+    return this.request('/budgets', {
+      method: 'POST',
+      body: JSON.stringify({
+        category: budget.category,
+        limit: Number(budget.limit),
+        month: Number(budget.month),
+        year: Number(budget.year)
+      })
+    });
+  },
+
+  updateBudget(id, budget) {
+    return this.request(`/budgets/${encodeURIComponent(id)}`, {
+      method: 'PATCH',
+      body: JSON.stringify(budget)
+    });
+  },
+
+  deleteBudget(id) {
+    return this.request(`/budgets/${encodeURIComponent(id)}`, {
+      method: 'DELETE'
+    });
   }
 };

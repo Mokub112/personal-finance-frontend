@@ -7,6 +7,27 @@ Pages.budget = (function () {
   const list = () => State.budget[monthKey(State.monthOffset)] || [];
 
   
+  function getMonthYear(offset) {
+    const [year, month] = monthKey(offset).split('-').map(Number);
+    return { month, year };
+  }
+
+  async function loadBudgets() {
+    const key = monthKey(State.monthOffset);
+    const { month, year } = getMonthYear(State.monthOffset);
+
+    const budgets = await API.getBudgets(month, year);
+
+    State.budget[key] = budgets.map(b => ({
+      id: b.id,
+      name: b.category,
+      limit: b.limit,
+      used: b.spent || 0
+    }));
+
+    return State.budget[key];
+  }
+  
   async function getActualExpenses() {
     const transactions = await API.getTransactions();
     const key = monthKey(State.monthOffset);
@@ -46,59 +67,73 @@ Pages.budget = (function () {
     g('bud-limit').value = x ? x.limit : ''; g('bud-used').value = x ? x.used : ''; g('bud-error').hidden = true;
     openModal('bud-modal');
   }
-  function save() {
+  
+  async function save() {
     const name = g('bud-cat').value;
     const limit = parseFloat(g('bud-limit').value);
     const err = g('bud-error');
 
-    if (!(limit > 0)) {
+    if (!(limit > 0) || !Number.isFinite(limit)) {
       err.textContent = 'กรุณากรอกงบที่ตั้งไว้มากกว่า 0';
       err.hidden = false;
       return;
     }
 
     const key = monthKey(State.monthOffset);
+    const arr = list();
+    const existing = editName
+      ? arr.find(b => b.name === editName)
+      : null;
 
-    if (!State.budget[key]) {
-      State.budget[key] = [];
+    if (editName && !existing) {
+      err.textContent = 'ไม่พบงบประมาณที่ต้องการแก้ไข';
+      err.hidden = false;
+      return;
     }
 
-    const arr = State.budget[key];
+    if (!editName && arr.some(b => b.name === name)) {
+      err.textContent = 'หมวดนี้มีงบประมาณของเดือนนี้แล้ว';
+      err.hidden = false;
+      return;
+    }
 
-    if (editName) {
-      const i = arr.findIndex(b => b.name === editName);
+    const { month, year } = getMonthYear(State.monthOffset);
 
-      if (i >= 0) {
-        arr[i] = {
-          name: editName,
+    try {
+      if (existing) {
+        await API.updateBudget(existing.id, { limit });
+      } else {
+        await API.createBudget({
+          category: name,
           limit,
-          used: 0
-        };
-      }
-    } else {
-      if (arr.some(b => b.name === name)) {
-        err.textContent =
-          'หมวดนี้มีงบประมาณของเดือนนี้แล้ว — กดแก้ไขที่การ์ดหมวดนั้นแทน';
-        err.hidden = false;
-        return;
+          month,
+          year
+        });
       }
 
-      arr.push({
-        name,
-        limit,
-        used: 0
-      });
+      await loadBudgets();
+      closeModal('bud-modal');
+      toast('บันทึกงบประมาณแล้ว');
+      await render();
+    } catch (error) {
+      err.textContent = error.message || 'บันทึกงบประมาณไม่สำเร็จ';
+      err.hidden = false;
     }
-
-    saveAll();
-    closeModal('bud-modal');
-    toast('บันทึกงบประมาณแล้ว');
-    render();
   }
-  function del(name) {
-    const key = monthKey(State.monthOffset), arr = State.budget[key] || [], i = arr.findIndex(b => b.name === name); if (i < 0) return;
-    const item = arr.splice(i, 1)[0]; saveAll(); render();
-    toast('ลบงบประมาณแล้ว', { action: 'เลิกทำ', onAction() { (State.budget[key] = State.budget[key] || []).splice(i, 0, item); saveAll(); App.refresh(); } });
+
+  
+  async function del(name) {
+    const item = list().find(b => b.name === name);
+    if (!item) return;
+
+    try {
+      await API.deleteBudget(item.id);
+      await loadBudgets();
+      await render();
+      toast('ลบงบประมาณแล้ว');
+    } catch (error) {
+      toast(error.message || 'ลบงบประมาณไม่สำเร็จ');
+    }
   }
   
   function openRecord(name) {
@@ -121,15 +156,57 @@ Pages.budget = (function () {
     if (!(a > 0)) { g('rec-error').textContent = 'กรุณากรอกจำนวนเงินมากกว่า 0'; g('rec-error').hidden = false; return; }
     b.used = Math.round((b.used + a) * 100) / 100; saveAll(); closeModal('rec-modal'); toast('บันทึกรายจ่ายแล้ว'); render();
   }
-  function copyPrev() {
-    const prev = State.budget[monthKey(State.monthOffset - 1)] || [];
-    State.budget[monthKey(State.monthOffset)] = prev.map(b => ({ name: b.name, limit: b.limit, used: 0 }));
-    saveAll(); toast('คัดลอกงบจากเดือนก่อนแล้ว'); render();
-  }
-
   
+  async function copyPrev() {
+    const current = getMonthYear(State.monthOffset);
+    const previous = getMonthYear(State.monthOffset - 1);
+
+    try {
+      const prevBudgets = await API.getBudgets(
+        previous.month,
+        previous.year
+      );
+
+      const currentBudgets = await API.getBudgets(
+        current.month,
+        current.year
+      );
+
+      const existingCategories = new Set(
+        currentBudgets.map(b => b.category.toLowerCase())
+      );
+
+      for (const budget of prevBudgets) {
+        if (!existingCategories.has(budget.category.toLowerCase())) {
+          await API.createBudget({
+            category: budget.category,
+            limit: budget.limit,
+            month: current.month,
+            year: current.year
+          });
+        }
+      }
+
+      await loadBudgets();
+      await render();
+      toast('คัดลอกงบจากเดือนก่อนแล้ว');
+    } catch (error) {
+      toast(error.message || 'คัดลอกงบประมาณไม่สำเร็จ');
+    }
+  }
+  
+
 async function render() {
   if (!root) return;
+
+  try {
+    await loadBudgets();
+  } catch (error) {
+    console.error('Load budgets failed:', error);
+    $('[data-grid]').innerHTML =
+      '<div class="empty">โหลดงบประมาณไม่สำเร็จ กรุณาลองใหม่อีกครั้ง</div>';
+    return;
+  }
 
   const items = list();
   const grid = $('[data-grid]');
